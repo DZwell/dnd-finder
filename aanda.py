@@ -1,10 +1,14 @@
 import os
+from spreadsheet import get_item_codes
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.keys import Keys
 
+
+item_codes = get_item_codes()
 
 chrome_options = Options()
-chrome_options.add_argument("--headless")
+# chrome_options.add_argument("--headless")
 browser = webdriver.Chrome(chrome_options=chrome_options)
 browser.get(os.environ['SITE'])
 
@@ -18,8 +22,12 @@ password.send_keys(os.environ['PASSWORD'])
 login.click()
 
 # Homepage
-setItemCode = str("javascript:document.getElementsByName('itemcode')[0].value = 'SWF35';")
-clickButton = str("javascript:document.getElementsByName('Go')[0].click();")
+for i in item_codes:
+  set_item_code = str("javascript:document.getElementsByName('itemcode')[0].value = " + "'" + i + "'" + ";")
+  click_button = str("javascript:document.getElementsByName('Go')[0].click();")
 
-browser.execute_script(setItemCode)
-browser.execute_script(clickButton)
+  browser.execute_script(set_item_code)
+  browser.execute_script(click_button)
+  import pdb; pdb.set_trace()
+  # browser.find_element_by_tag_name('body').send_keys(Keys.COMMAND + 't')
+  browser.execute_script('window.open("' + os.environ['SITE'] + '","_blank");')
