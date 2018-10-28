@@ -1,14 +1,15 @@
 import os
-from spreadsheet import get_item_codes
+from sheets import get_item_codes, write_to_sheet
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 
 
 item_codes = get_item_codes()
+item_status_list = []
 
 chrome_options = Options()
-# chrome_options.add_argument("--headless")
+chrome_options.add_argument("--headless")
 browser = webdriver.Chrome(chrome_options=chrome_options)
 browser.get(os.environ['SITE'])
 
@@ -28,9 +29,16 @@ for i in item_codes:
 
   browser.execute_script(set_item_code)
   browser.execute_script(click_button)
-  # browser.find_element_by_tag_name('body').send_keys(Keys.COMMAND + 't')
-  browser.execute_script('window.open("' + os.environ['SITE'] + '","_blank");')
 
+  e_column = browser.find_element_by_name('E').text
+  mw_column = browser.find_element_by_name('MW').text
+  sw_column =  browser.find_element_by_name('SW').text
+  w_column =  browser.find_element_by_name('W').text
 
-  # Search for less than four Ys
-  # 
+  print(e_column, mw_column, sw_column, w_column)
+
+  has_full_stock = e_column == 'Y' and mw_column == 'Y' and sw_column == 'Y' and w_column == 'Y'
+
+  item_status_list.append([1 if has_full_stock else 0])
+
+write_to_sheet(item_status_list)

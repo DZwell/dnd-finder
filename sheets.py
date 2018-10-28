@@ -3,33 +3,41 @@ from googleapiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
 
-# If modifying these scopes, delete the file token.json.
-SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly'
+SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
 
-def main():
-    """Shows basic usage of the Sheets API.
-    Prints values from a sample spreadsheet.
-    """
+def authenticate():
     store = file.Storage('token.json')
     creds = store.get()
     if not creds or creds.invalid:
         flow = client.flow_from_clientsecrets('credentials.json', SCOPES)
         creds = tools.run_flow(flow, store)
-    service = build('sheets', 'v4', http=creds.authorize(Http()))
+    return build('sheets', 'v4', http=creds.authorize(Http()))
 
-    # Call the Sheets API
-    SPREADSHEET_ID = os.environ['SHEET_ID']
-    RANGE_NAME = 'A2:A'
+service = authenticate()
+SPREADSHEET_ID = os.environ['SHEET_ID']
+
+
+def get_item_codes():
+    range_name = 'A2:A5'
     result = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID,
-                                                range=RANGE_NAME).execute()
+                                                range=range_name).execute()
     values = result.get('values', [])
-
+    item_codes = []
 
     if not values:
         print('No data found.')
     else:
         for row in values:
-            print(row)
+            code = row[0]
+            item_codes.append(code)
+    return item_codes
 
-if __name__ == '__main__':
-    main()
+
+def write_to_sheet(values):
+    range_name = 'B2:B5'
+    body = {
+        'values': values
+    }
+    result = service.spreadsheets().values().update(
+      spreadsheetId=SPREADSHEET_ID, range=range_name,
+      valueInputOption='RAW', body=body).execute()
