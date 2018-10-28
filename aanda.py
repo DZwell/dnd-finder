@@ -28,6 +28,9 @@ for i in item_codes:
 
   browser.execute_script(set_item_code)
   browser.execute_script(click_button)
-  import pdb; pdb.set_trace()
   # browser.find_element_by_tag_name('body').send_keys(Keys.COMMAND + 't')
   browser.execute_script('window.open("' + os.environ['SITE'] + '","_blank");')
+
+
+  # Search for less than four Ys
+  # 

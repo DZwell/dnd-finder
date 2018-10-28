@@ -5,3 +5,7 @@ lib/
 include/
 pip-selfcheck.json
 .Python
+*.pyc
+.vscode
+share/
+
