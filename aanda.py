@@ -7,6 +7,7 @@ from selenium.webdriver.common.keys import Keys
 
 item_codes = get_item_codes()
 item_status_list = []
+out_file = open('output.txt', 'w')
 
 chrome_options = Options()
 chrome_options.add_argument("--headless")
@@ -29,11 +30,14 @@ for i in item_codes:
 
   browser.execute_script(set_item_code)
   browser.execute_script(click_button)
-
-  e_column = browser.find_element_by_name('E').text
-  mw_column = browser.find_element_by_name('MW').text
-  sw_column =  browser.find_element_by_name('SW').text
-  w_column =  browser.find_element_by_name('W').text
+  
+  try:
+      e_column = browser.find_element_by_name('E').text
+      mw_column = browser.find_element_by_name('MW').text
+      sw_column =  browser.find_element_by_name('SW').text
+      w_column =  browser.find_element_by_name('W').text
+  except Exception as err:
+      out_file.write('Item code: {}\n Error: {}'.format(i, err))
 
   print(e_column, mw_column, sw_column, w_column)
 

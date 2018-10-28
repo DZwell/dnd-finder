@@ -18,7 +18,7 @@ SPREADSHEET_ID = os.environ['SHEET_ID']
 
 
 def get_item_codes():
-    range_name = 'A2:A5'
+    range_name = 'A2:A'
     result = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID,
                                                 range=range_name).execute()
     values = result.get('values', [])
@@ -34,7 +34,7 @@ def get_item_codes():
 
 
 def write_to_sheet(values):
-    range_name = 'B2:B5'
+    range_name = 'B2:B'
     body = {
         'values': values
     }
