@@ -8,4 +8,5 @@ pip-selfcheck.json
 *.pyc
 .vscode
 share/
-
+credentials.json
+token.json
