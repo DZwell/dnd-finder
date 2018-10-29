@@ -5,6 +5,7 @@ from oauth2client import file, client, tools
 
 SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
 
+
 def authenticate():
     store = file.Storage('token.json')
     creds = store.get()
@@ -12,6 +13,7 @@ def authenticate():
         flow = client.flow_from_clientsecrets('credentials.json', SCOPES)
         creds = tools.run_flow(flow, store)
     return build('sheets', 'v4', http=creds.authorize(Http()))
+
 
 service = authenticate()
 SPREADSHEET_ID = os.environ['SHEET_ID']
