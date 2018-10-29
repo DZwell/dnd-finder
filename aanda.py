@@ -25,24 +25,26 @@ login.click()
 
 # Homepage
 for i in item_codes:
-  set_item_code = str("javascript:document.getElementsByName('itemcode')[0].value = " + "'" + i + "'" + ";")
-  click_button = str("javascript:document.getElementsByName('Go')[0].click();")
+    set_item_code = str("javascript:document.getElementsByName('itemcode')[0].value = " + "'" + i + "'" + ";")
+    click_button = str("javascript:document.getElementsByName('Go')[0].click();")
 
-  browser.execute_script(set_item_code)
-  browser.execute_script(click_button)
+    browser.execute_script(set_item_code)
+    browser.execute_script(click_button)
   
-  try:
-      e_column = browser.find_element_by_name('E').text
-      mw_column = browser.find_element_by_name('MW').text
-      sw_column =  browser.find_element_by_name('SW').text
-      w_column =  browser.find_element_by_name('W').text
-  except Exception as err:
-      out_file.write('Item code: {}\n Error: {}'.format(i, err))
+    try:
+        e_column = browser.find_element_by_name('E').text
+        mw_column = browser.find_element_by_name('MW').text
+        sw_column =  browser.find_element_by_name('SW').text
+        w_column =  browser.find_element_by_name('W').text
+    except Exception as err:
+        out_file.write('Item code: {}\n'.format(i))
+        e_column = None
 
-  print(e_column, mw_column, sw_column, w_column)
+    print(e_column, mw_column, sw_column, w_column)
 
-  has_full_stock = e_column == 'Y' and mw_column == 'Y' and sw_column == 'Y' and w_column == 'Y'
-
-  item_status_list.append([1 if has_full_stock else 0])
-
+    if e_column:
+        has_full_stock = e_column == 'Y' and mw_column == 'Y' and sw_column == 'Y' and w_column == 'Y'
+        item_status_list.append([1 if has_full_stock else 0])
+    else:
+        item_status_list.append(['N/A'])
 write_to_sheet(item_status_list)
