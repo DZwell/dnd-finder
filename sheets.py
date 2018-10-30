@@ -32,6 +32,7 @@ def get_item_codes():
         for row in values:
             code = row[0]
             item_codes.append(code)
+    print('Reading {} item codes from spreadsheet\n'.format(len(item_codes)))
     return item_codes
 
 
