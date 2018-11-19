@@ -1,6 +1,7 @@
 import os
 import time
 from sheets import get_item_codes, write_to_sheet
+from creds_file import get_creds, set_creds
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 start_time = time.time()
@@ -9,14 +10,19 @@ print('\nInitializing...\n')
 
 item_codes = get_item_codes()
 item_status_list = []
-out_file = open('output.txt', 'w')
 count = 1
+
+if not os.path.isfile('creds.json'):
+    creds_file = open('creds.json', 'w')
+    set_creds(creds_file)
+
+creds = get_creds(open('creds.json', 'r'))
 
 # Selenium setup
 chrome_options = Options()
 chrome_options.add_argument("--headless")
 browser = webdriver.Chrome(chrome_options=chrome_options)
-browser.get(os.environ['SITE'])
+browser.get(creds['site'])
 
 # Login page
 user_name = browser.find_element_by_id('UserName')
@@ -24,8 +30,8 @@ password = browser.find_element_by_id('Password')
 login = browser.find_element_by_id('Submit')
 
 print('Logging in...\n')
-user_name.send_keys(os.environ['USERNAME'])
-password.send_keys(os.environ['PASSWORD'])
+user_name.send_keys(creds['username'])
+password.send_keys(creds['password'])
 login.click()
 print('Searching...\n')
 
@@ -43,7 +49,6 @@ for i in item_codes:
         sw_column = browser.find_element_by_name('SW').text
         w_column = browser.find_element_by_name('W').text
     except Exception:
-        out_file.write('Item code: {}\n'.format(i))
         e_column = None
 
     print('{}/{}\n'.format(count, len(item_codes)))
@@ -57,7 +62,6 @@ for i in item_codes:
 
 # Last steps
 write_to_sheet(item_status_list)
-out_file.close()
 elapsed_time = time.time() - start_time
 pretty_time = time.strftime("%H:%M:%S", time.gmtime(elapsed_time))
 print('Done!\n')
