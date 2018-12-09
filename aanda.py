@@ -8,15 +8,16 @@ start_time = time.time()
 
 print('\nInitializing...\n')
 
-item_codes = get_item_codes()
-item_status_list = []
-count = 1
-
 if not os.path.isfile('creds.json'):
     creds_file = open('creds.json', 'w')
     set_creds(creds_file)
 
 creds = get_creds(open('creds.json', 'r'))
+
+item_codes = get_item_codes()
+item_status_list = []
+count = 1
+
 
 # Selenium setup
 chrome_options = Options()
