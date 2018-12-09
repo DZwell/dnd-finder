@@ -8,6 +8,4 @@ pip-selfcheck.json
 *.pyc
 .vscode
 share/
-credentials.json
-token.json
-output.txt
+google-api/
