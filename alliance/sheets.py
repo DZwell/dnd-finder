@@ -30,8 +30,9 @@ def get_item_codes():
         print('No data found.')
     else:
         for row in values:
-            code = row[0]
-            item_codes.append(code)
+            if row:
+                code = row[0]
+                item_codes.append(code)
     print('Reading {} item codes from spreadsheet\n'.format(len(item_codes)))
     return item_codes
 
