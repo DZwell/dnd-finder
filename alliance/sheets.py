@@ -38,9 +38,10 @@ def get_item_codes():
 
 
 def write_to_sheet(values):
-    range_name = 'B2:B'
+    range_name = 'C:G'
     body = {
-        'values': values
+        'values': values,
+        'majorDimension': 'ROWS',
     }
     result = service.spreadsheets().values().update(
       spreadsheetId=SPREADSHEET_ID, range=range_name,

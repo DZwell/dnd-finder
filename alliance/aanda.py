@@ -49,16 +49,17 @@ for i in item_codes:
         mw_column = browser.find_element_by_name('MW').text
         sw_column = browser.find_element_by_name('SW').text
         w_column = browser.find_element_by_name('W').text
+        status_column = browser.find_element_by_name('Status').text
     except Exception:
         e_column = None
 
     print('{}/{}\n'.format(count, len(item_codes)))
 
     if e_column:
-        has_full_stock = e_column == 'Y' and mw_column == 'Y' and sw_column == 'Y' and w_column == 'Y'
-        item_status_list.append([1 if has_full_stock else 0])
-    else:
-        item_status_list.append(['N/A'])
+        stock_list = [e_column, mw_column, sw_column, w_column]
+        if status_column:
+            stock_list.append(status_column)
+        item_status_list.append(stock_list)
     count += 1
 
 # Last steps
