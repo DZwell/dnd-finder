@@ -16,6 +16,7 @@ creds = get_creds(open('creds.json', 'r'))
 
 item_codes = get_item_codes()
 item_status_list = []
+not_available = 'N/A'
 count = 1
 
 
@@ -60,6 +61,8 @@ for i in item_codes:
         if status_column:
             stock_list.append(status_column)
         item_status_list.append(stock_list)
+    else:
+        item_status_list.append([[not_available * 4]])
     count += 1
 
 # Last steps
