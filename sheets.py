@@ -7,10 +7,10 @@ SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
 
 
 def authenticate():
-    store = file.Storage('../google-api/token.json')
+    store = file.Storage('token.json')
     creds = store.get()
     if not creds or creds.invalid:
-        flow = client.flow_from_clientsecrets('../google-api/credentials.json', SCOPES)
+        flow = client.flow_from_clientsecrets('credentials.json', SCOPES)
         creds = tools.run_flow(flow, store)
     return build('sheets', 'v4', http=creds.authorize(Http()))
 
@@ -20,7 +20,7 @@ SPREADSHEET_ID = os.environ['SHEET_ID']
 
 
 def get_item_codes():
-    range_name = 'A2:A'
+    range_name = 'A2:A3'
     result = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID,
                                                 range=range_name).execute()
     values = result.get('values', [])
@@ -38,7 +38,7 @@ def get_item_codes():
 
 
 def write_to_sheet(values):
-    range_name = 'C:G'
+    range_name = 'Alliance project!C2:G'
     body = {
         'values': values,
         'majorDimension': 'ROWS',
