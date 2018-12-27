@@ -15,13 +15,10 @@ def authenticate():
     return build('sheets', 'v4', http=creds.authorize(Http()))
 
 
-service = authenticate()
-SPREADSHEET_ID = os.environ['SHEET_ID']
-
-
-def get_item_codes():
-    range_name = 'A2:A3'
-    result = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID,
+def get_item_codes(spreadsheet_id):
+    service = authenticate()
+    range_name = 'A2:A12'
+    result = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id,
                                                 range=range_name).execute()
     values = result.get('values', [])
     item_codes = []
@@ -44,5 +41,5 @@ def write_to_sheet(values):
         'majorDimension': 'ROWS',
     }
     result = service.spreadsheets().values().update(
-      spreadsheetId=SPREADSHEET_ID, range=range_name,
+      spreadsheetId=spreadsheet_id, range=range_name,
       valueInputOption='RAW', body=body).execute()
