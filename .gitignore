@@ -8,4 +8,7 @@ pip-selfcheck.json
 *.pyc
 .vscode
 share/
-google-api/
+credentials.json
+token.json
+creds.json
+.DS_Store
