@@ -14,10 +14,10 @@ def authenticate():
         creds = tools.run_flow(flow, store)
     return build('sheets', 'v4', http=creds.authorize(Http()))
 
+service = authenticate()
 
 def get_item_codes(spreadsheet_id):
-    service = authenticate()
-    range_name = 'A2:A12'
+    range_name = 'Alliance project!A2:A'
     result = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id,
                                                 range=range_name).execute()
     values = result.get('values', [])
@@ -34,7 +34,7 @@ def get_item_codes(spreadsheet_id):
     return item_codes
 
 
-def write_to_sheet(values):
+def write_to_sheet(values, spreadsheet_id):
     range_name = 'Alliance project!C2:G'
     body = {
         'values': values,

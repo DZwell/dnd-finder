@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 from sheets import get_item_codes, write_to_sheet
 from creds_file import get_creds, set_creds
@@ -21,9 +22,18 @@ count = 1
 
 
 # Selenium setup
+if getattr(sys, 'frozen', False) :
+    # running in a bundle
+    base_dir = sys._MEIPASS
+else:
+    # running normally
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+
+chromedriver_path = os.path.join(base_dir, 'chromedriver')
+chrome_path = os.path.join(base_dir, 'selenium','webdriver','chromedriver.exe')
 chrome_options = Options()
 chrome_options.add_argument("--headless")
-browser = webdriver.Chrome(chrome_options=chrome_options)
+browser = webdriver.Chrome(chrome_options=chrome_options, executable_path=chrome_path)
 browser.get(creds['site'])
 
 # Login page
@@ -44,7 +54,7 @@ for i in item_codes:
 
     browser.execute_script(set_item_code)
     browser.execute_script(click_button)
-  
+
     try:
         e_column = browser.find_element_by_name('E').text
         mw_column = browser.find_element_by_name('MW').text
@@ -66,7 +76,7 @@ for i in item_codes:
     count += 1
 
 # Last steps
-write_to_sheet(item_status_list)
+write_to_sheet(item_status_list, creds['sheet_id'])
 elapsed_time = time.time() - start_time
 pretty_time = time.strftime("%H:%M:%S", time.gmtime(elapsed_time))
 print('Done!\n')
