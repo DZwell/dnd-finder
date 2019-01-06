@@ -22,18 +22,17 @@ count = 1
 
 
 # Selenium setup
-if getattr(sys, 'frozen', False) :
+if getattr(sys, 'frozen', False):
     # running in a bundle
     base_dir = sys._MEIPASS
 else:
     # running normally
     base_dir = os.path.dirname(os.path.abspath(__file__))
 
-chromedriver_path = os.path.join(base_dir, 'chromedriver')
-chrome_path = os.path.join(base_dir, 'selenium','webdriver','chromedriver.exe')
+chrome_path = os.path.join(base_dir, 'selenium', 'webdriver', 'chromedriver.exe')
 chrome_options = Options()
 chrome_options.add_argument("--headless")
-browser = webdriver.Chrome(chrome_options=chrome_options, executable_path=chrome_path)
+browser = webdriver.Chrome(options=chrome_options, executable_path=chrome_path)
 browser.get(creds['site'])
 
 # Login page

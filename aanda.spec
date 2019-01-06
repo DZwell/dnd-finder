@@ -4,14 +4,9 @@ block_cipher = None
 
 
 a = Analysis(['aanda.py'],
-             pathex=['C:\\Users\\Daniel.Zwelling\\Documents\\dnd-finder\\dz'],
-             binaries=[
-               ('C:\\Users\\Daniel.Zwelling\\AppData\\Local\\Programs\\chromedriver_win32\\chromedriver.exe', '.\\selenium\\webdriver')
-             ],
-             datas=[
-               ('C:\\Users\\Daniel.Zwelling\\Documents\\dnd-finder\\dz\\credentials.json', '.'),
-               ('C:\\Users\\Daniel.Zwelling\\Documents\\dnd-finder\\dz\\token.json', '.')
-             ],
+             pathex=['/Users/danielzwelling/Documents/coding_stuff/dnd-finder'],
+             binaries=[],
+             datas=[],
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
